@@ -43,6 +43,17 @@ export default class Player extends MatterEntity {
 
   update(){
     if(this.dead) return;
+
+    if(this.inventory.selectedItem){
+      let texture = this.spriteWeapon.setTexture(
+        'items',
+        this.inventory.getItemFrame(
+          this.inventory.selectedItem));
+      this.spriteWeapon.setVisible(true);
+    }else{
+      this.spriteWeapon.setVisible(false);
+    }
+
     const speed = 2.5;
     let playerVelocity = new Phaser.Math.Vector2();
     if(this.inputKeys.left.isDown) {

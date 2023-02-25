@@ -70,9 +70,38 @@ export default class InventoryScene extends Phaser.Scene {
             }
             this.inventorySlots.push(inventorySlot);
         }
+        this.updateSelected();
+    }
+
+    updateSelected(){
+        for (let index = 0; index < this.maxColumns; index++) {
+            this.inventorySlots[index].tint = this.inventory.selected === index ? 0xffff00 : 0xffffff;            
+        }
     }
 
     create() {
+
+        //NUMBERS TO SELECT INVENTORY
+        this.inputKeys = this.input.keyboard.addKeys({
+            one: Phaser.Input.Keyboard.KeyCodes.ONE,
+            two: Phaser.Input.Keyboard.KeyCodes.TWO,
+            three: Phaser.Input.Keyboard.KeyCodes.THREE,
+            four: Phaser.Input.Keyboard.KeyCodes.FOUR,
+            five: Phaser.Input.Keyboard.KeyCodes.FIVE,
+            six: Phaser.Input.Keyboard.KeyCodes.SIX,
+            seven: Phaser.Input.Keyboard.KeyCodes.SEVEN,
+            eight: Phaser.Input.Keyboard.KeyCodes.EIGHT,
+            nine: Phaser.Input.Keyboard.KeyCodes.NINE,
+        })
+
+        //SELECTION
+        this.input.on('wheel',(pointer, gameObjects, deltaX, deltaY, deltaZ) => {
+            this.inventory.selected = Math.max(
+                0,
+                this.inventory.selected + (deltaY > 0 ? 1 : -1)) % this.maxColumns;
+                this.updateSelected();
+
+        })
 
         this.input.keyboard.on('keydown-I', ()=>{
             this.rows = this.rows === 1 ? this.maxRows : 1;
@@ -99,5 +128,17 @@ export default class InventoryScene extends Phaser.Scene {
         });
 
         this.refresh();
+    }
+
+    update(){
+
+        //Minha criação
+        // Object.keys(this.inputKeys).forEach(keyBoard =>{
+        //     if(this.inputKeys[keyBoard].isDown){
+        //         this.inventory.selected = this.inputKeys[keyBoard].keyCode - 49;
+        //         this.updateSelected();
+        //     }
+        // });
+
     }
 }

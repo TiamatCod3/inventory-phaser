@@ -1,11 +1,15 @@
+import items from "./Items";
+
 export default class Inventory {
     constructor() {
-        this.maxColumns = 8;
+        this.maxColumns = 9;
         this.maxRows = 3;
+        this.selected = 0;
 
         this.items = {
             0: { name: 'pickaxe', quantity: 1 },
-            2: { name: 'stone', quantity: 3 }
+            2: { name: 'stone', quantity: 3 },
+            5: {name: 'shovel', quantity: 5 },
         }
         this.addItem({ name: 'pickaxe', quantity: 2 })
     }
@@ -33,5 +37,13 @@ export default class Inventory {
         if (start ===  end || this.items[end]) return;
         this.items[end] = this.items[start];
         delete this.items[start];
+    }
+
+    get selectedItem(){
+        return this.items[this.selected];
+    }
+
+    getItemFrame(item){
+        return items[item.name].frame;
     }
 }
